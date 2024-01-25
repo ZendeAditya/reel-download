@@ -2,10 +2,12 @@
 
 import GetUrl from "@/utils/getreel";
 import React, { FormEvent, useRef, useState } from "react";
-
+interface Reel {
+  url: string;
+}
 const Input = () => {
   const inputVal = useRef<HTMLInputElement>(null);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Reel | null>(null);
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const reel = await GetUrl(inputVal.current?.value);
