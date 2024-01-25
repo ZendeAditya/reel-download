@@ -4,15 +4,18 @@ import GetUrl from "@/utils/getreel";
 import React, { FormEvent, useRef, useState } from "react";
 interface Reel {
   url: string;
+  type: string;
+  size: string;
+  thumb: string;
 }
 const Input = () => {
   const inputVal = useRef<HTMLInputElement>(null);
-  const [data, setData] = useState<Reel | null>(null);
+  const [data, setData] = useState<Reel[] | null>(null);
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const reel = await GetUrl(inputVal.current?.value);
     console.log(reel);
-    setData(reel?.result);
+    setData(reel.result);
   };
   return (
     <section className="flex items-center justify-center gap-4 flex-col">
@@ -36,24 +39,25 @@ const Input = () => {
         </div>
       </form>
       <div className="flex items-center justify-center min-h-screen">
-        {data.map((reel, id) => (
-          <div key={id}>
-            <video
-              controls
-              className="w-96 h-96 rounded-md"
-              src={reel.url}
-            ></video>
-            <div className="py-5">
-              <a
-                href={reel.url}
-                download
-                className="py-2 px-8 rounded-md mt-5 border-2 outline-none hover:bg-green-400 hover:duration-500 hover:ease-in"
-              >
-                Download
-              </a>
+        {data &&
+          data.map((reel, id) => (
+            <div key={id}>
+              <video
+                controls
+                className="w-96 h-96 rounded-md"
+                src={reel.url}
+              ></video>
+              <div className="py-5">
+                <a
+                  href={reel.url}
+                  download
+                  className="py-2 px-8 rounded-md mt-5 border-2 outline-none hover:bg-green-400 hover:duration-500 hover:ease-in"
+                >
+                  Download
+                </a>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </section>
   );
